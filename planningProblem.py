@@ -5,13 +5,13 @@ from planGraphLevel import PlanGraphLevel
 from Parser import Parser
 from action import Action
 
-try:
-  from search import SearchProblem
-  from search import aStarSearch
+# try:
+#   from search import SearchProblem
+#   from search import aStarSearch
 
-except:
-  from  CPF.search import SearchProblem
-  from  CPF.search import aStarSearch
+# except:
+from CPF.search import SearchProblem
+from CPF.search import aStarSearch
 
 class PlanningProblem():
   def __init__(self, domain, problem):
