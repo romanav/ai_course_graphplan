@@ -221,7 +221,10 @@ def independentPair(a1, a2):
     if add_del_intersection(a1, a2) or add_del_intersection(a2, a1):
         return False
 
-    "*** YOUR CODE HERE ***"
+    # Interference
+
+    # Competing needs
+    raise NotImplemented()
 
 
 if __name__ == '__main__':
