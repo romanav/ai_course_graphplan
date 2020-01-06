@@ -216,15 +216,24 @@ def independentPair(a1, a2):
     assert (isinstance(a1, Action))  # say to IDE which type methods in code completion to show
     assert (isinstance(a2, Action))
 
+    if a1 == a2:
+        return True
+
     # Inconsistent effects
     def add_del_intersection(x, y): return set(x.getAdd()) & set(y.getDelete())
     if add_del_intersection(a1, a2) or add_del_intersection(a2, a1):
         return False
 
     # Interference
+    for i in a1.getDelete():
+        if i == a2.getPre():
+            return False
 
-    # Competing needs
-    raise NotImplemented()
+    for i in a2.getDelete():
+        if i == a1.getPre():
+            return False
+
+    return True
 
 
 if __name__ == '__main__':
