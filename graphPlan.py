@@ -220,8 +220,10 @@ def independentPair(a1, a2):
         return True
 
     # Inconsistent effects
-    def add_del_intersection(x, y): return set(x.getAdd()) & set(y.getDelete())
-    if add_del_intersection(a1, a2) or add_del_intersection(a2, a1):
+    if set(a1.getAdd()) & set(a2.getDelete()):
+        return False
+
+    if set(a2.getAdd()) & set(a1.getDelete()):
         return False
 
     # Interference
