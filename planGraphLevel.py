@@ -3,6 +3,7 @@ from actionLayer import ActionLayer
 from util import Pair
 from proposition import Proposition
 from propositionLayer import PropositionLayer
+from itertools import product
 
 
 class PlanGraphLevel(object):
@@ -130,7 +131,7 @@ class PlanGraphLevel(object):
 def mutexActions(a1, a2, mutexProps):
     """
     This function returns true if a1 and a2 are mutex actions.
-    We first check whether a1 and a2 are in PlanGraphLevel.independentActions,
+    We first check whether a1 and pa2 are in PlanGraphLevel.independentActions,
     this is the list of all the independent pair of actions (according to your implementation in question 1).
     If not, we check whether a1 and a2 have competing needs
     """
@@ -160,4 +161,10 @@ def mutexPropositions(prop1, prop2, mutexActions):
     You might want to use this function:
     prop1.getProducers() returns the list of all the possible actions in the layer that have prop1 on their add list
     """
-    "*** YOUR CODE HERE ***"
+    prod1 = prop1.getProducers()
+    prod2 = prop2.getProducers()
+
+    for a1, a2 in product(prod1, prod2):
+        if Pair(a1, a2) not in mutexActions:
+            return False
+    return True
