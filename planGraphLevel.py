@@ -67,7 +67,8 @@ class PlanGraphLevel(object):
             if previousPropositionLayer.allPrecondsInLayer(action):  # only if all pre. exist, then try to add it
                 mutexes = previousPropositionLayer.getMutexProps()
                 has_mutexes = False
-                for p1, p2 in product(action.getPre(), action.getPre()):  # check for all pairs of mutexes, also if we have one pre. only, it will work
+                for p1, p2 in product(action.getPre(),
+                                      action.getPre()):  # check for all pairs of mutexes, also if we have one pre. only, it will work
                     if Pair(p1, p1) in mutexes:
                         has_mutexes = True
                         break
@@ -84,8 +85,10 @@ class PlanGraphLevel(object):
         adds the pair (action1, action2) to the mutex list in the current action layer
         Note that action is *not* mutex with itself
         """
-        currentLayerActions = self.actionLayer.getActions()
-        "*** YOUR CODE HERE ***"
+        current_layer_actions = self.actionLayer.getActions()
+        for a1, a2 in product(current_layer_actions, current_layer_actions):
+            if a1 != a2 and mutexActions(a1, a2, previousLayerMutexProposition):
+                self.actionLayer.addMutexActions(a1, a2)
 
     def updatePropositionLayer(self):
         """
