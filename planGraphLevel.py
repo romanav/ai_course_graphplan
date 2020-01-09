@@ -61,8 +61,18 @@ class PlanGraphLevel(object):
         previousPropositionLayer.allPrecondsInLayer(action) returns true if all the preconditions of action are in the previous propositions layer
         self.actionLayer.addAction(action) adds action to the current action layer
         """
-        allActions = PlanGraphLevel.actions
-        "*** YOUR CODE HERE ***"
+        assert (isinstance(previousPropositionLayer, PropositionLayer))
+
+        for action in PlanGraphLevel.actions:
+            if previousPropositionLayer.allPrecondsInLayer(action):  # only if all pre. exist, then try to add it
+                mutexes = previousPropositionLayer.getMutexProps()
+                has_mutexes = False
+                for p1, p2 in product(action.getPre(), action.getPre()):  # check for all pairs of mutexes, also if we have one pre. only, it will work
+                    if Pair(p1, p1) in mutexes:
+                        has_mutexes = True
+                        break
+                if not has_mutexes:
+                    self.actionLayer.addAction(action)
 
     def updateMutexActions(self, previousLayerMutexProposition):
         """
