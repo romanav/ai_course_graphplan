@@ -1,0 +1,11 @@
+Propositions:
+hc ec bk nhc
+Actions:
+Name: eat_cake
+pre: hc
+add: ec nhc
+delete: hc
+Name: bake_cake
+pre: nhc
+add: hc
+delete: nhc

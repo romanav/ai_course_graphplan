@@ -1,0 +1,2 @@
+Initial state: hc
+Goal state: hc ec
