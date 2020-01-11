@@ -142,7 +142,7 @@ class PlanGraphLevel(object):
         self.updateActionLayer(previousPropositionLayer)
         self.updateMutexActions(previousLayerMutexProposition)
         self.updatePropositionLayer()
-        self.updatePropositionLayer()
+        self.updateMutexProposition()
 
         "*** YOUR CODE HERE ***"
 
@@ -152,7 +152,8 @@ class PlanGraphLevel(object):
         You don't have to use this function
         """
         previousLayerProposition = previousLayer.getPropositionLayer()
-        "*** YOUR CODE HERE ***"
+        self.updateActionLayer(previousLayerProposition)
+        self.updatePropositionLayer()
 
 
 def mutexActions(a1, a2, mutexProps):

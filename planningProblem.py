@@ -36,9 +36,11 @@ class PlanningProblem():
         """
         Hint: you might want to take a look at goalStateNotInPropLayer function
         """
-        print set(self.goal) - set(state)
-        return  (set(self.goal) - set(state)) == {}
+        for g in self.goal:
+            if g not in state:
+                return False
 
+        return True
 
     def getSuccessors(self, state):
         """
@@ -98,7 +100,28 @@ def maxLevel(state, problem):
     pgInit = PlanGraphLevel()                   #create a new plan graph level (level is the action layer and the propositions layer)
     pgInit.setPropositionLayer(propLayerInit)   #update the new plan graph level with the the proposition layer
     """
-    "*** YOUR CODE HERE ***"
+    propLayerInit = PropositionLayer()  # create a new proposition layer
+    for prop in state:
+        propLayerInit.addProposition(prop)  # update the proposition layer with the propositions of the state
+    pgInit = PlanGraphLevel()  # create a new plan graph level (level is the action layer and the propositions layer)
+    pgInit.setPropositionLayer(propLayerInit)
+
+    graph = []
+    level = 0
+    graph.append(pgInit)
+
+    while problem.goalStateNotInPropLayer(graph[level].getPropositionLayer().getPropositions()):
+        if isFixed(graph, level):
+            return float("inf")  # this means we stopped the while loop above because we reached a fixed point in the graph. nothing more to do, we failed!
+
+        # self.noGoods.append([])
+        level = level + 1
+        pgNext = PlanGraphLevel()  # create new PlanGraph object
+        pgNext.expandWithoutMutex(graph[level - 1])  # calls the expand function, which you are implementing in the PlanGraph class
+        graph.append(pgNext)  # appending the new level to the plan graph
+
+    return level
+
 
 
 def levelSum(state, problem):

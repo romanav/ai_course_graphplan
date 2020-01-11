@@ -51,8 +51,7 @@ class GraphPlan(object):
         and we have not reached the fixed point, continue expanding the graph
         """
 
-        while self.goalStateNotInPropLayer(self.graph[level].getPropositionLayer().getPropositions()) or \
-                self.goalStateHasMutex(self.graph[level].getPropositionLayer()):
+        while self.goalStateNotInPropLayer(self.graph[level].getPropositionLayer().getPropositions()) or self.goalStateHasMutex(self.graph[level].getPropositionLayer()):
             if self.isFixed(level):
                 return None  # this means we stopped the while loop above because we reached a fixed point in the graph. nothing more to do, we failed!
 
@@ -65,8 +64,7 @@ class GraphPlan(object):
 
             sizeNoGood = len(self.noGoods[level])  # remember size of nogood table
 
-        plan = self.extract(self.graph, self.goal,
-                            level)  # try to extract a plan since all of the goal propositions are in current graph level, and are not mutex
+        plan = self.extract(self.graph, self.goal, level)  # try to extract a plan since all of the goal propositions are in current graph level, and are not mutex
         while (plan is None):  # while we didn't extract a plan successfully
             level = level + 1
             self.noGoods.append([])
