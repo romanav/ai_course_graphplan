@@ -55,10 +55,20 @@ class PlanningProblem():
         """
         self._expanded += 1
         successors = []
+        states_dict = dict() # we use dictionary to updates propositions
+
         for a in self.actions:
             if not a.isNoOp() and a.allPrecondsInList(state):
-                action_successors = set(state) - set(a.getDelete()) | set(a.getAdd())
-                successors.append((list(action_successors), a, 1))
+                # connect states between state and action add and then delete what action remove
+                for i in state:
+                    states_dict[i.getName()] = i
+                for i in a.getAdd():
+                    states_dict[i.getName()] = i
+                for i in a.getDelete():
+                    if states_dict.has_key(i.getName()):
+                        states_dict.pop(i.getName())
+
+                successors.append((states_dict.values(), a, 1))
         return successors
 
     def getCostOfActions(self, actions):

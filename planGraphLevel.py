@@ -144,14 +144,13 @@ class PlanGraphLevel(object):
         self.updatePropositionLayer()
         self.updateMutexProposition()
 
-        "*** YOUR CODE HERE ***"
-
     def expandWithoutMutex(self, previousLayer):
         """
         Questions 11 and 12
         You don't have to use this function
         """
         previousLayerProposition = previousLayer.getPropositionLayer()
+
         self.updateActionLayer(previousLayerProposition)
         self.updatePropositionLayer()
 
