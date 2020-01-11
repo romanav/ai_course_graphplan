@@ -136,8 +136,13 @@ class PlanGraphLevel(object):
         Finally, given all the actions in the current layer,
         set the propositions and their mutex relations in the proposition layer.
         """
-        previousPropositionLayer = previousLayer.getPropositionLayer()
-        previousLayerMutexProposition = previousPropositionLayer.getMutexProps()
+        # previousPropositionLayer = previousLayer.getPropositionLayer()
+        # previousLayerMutexProposition = previousPropositionLayer.getMutexProps()
+
+        self.updateActionLayer(previousLayer.getPropositionLayer())
+        self.updateMutexActions(previousLayer.getPropositionLayer.getMutexProps())
+        self.updatePropositionLayer()
+        self.updatePropositionLayer()
 
         "*** YOUR CODE HERE ***"
 
