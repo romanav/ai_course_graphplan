@@ -86,6 +86,9 @@ class PlanningProblem():
         return False
 
     def isSubGoal(self, propositions):
+        """
+        If we have at least one sub goal, we will return true
+        """
         for goal in self.goal:
             if goal in propositions:
                 return True
@@ -173,7 +176,7 @@ def levelSum(state, problem):
         graph.append(pgNext)  # appending the new level to the plan graph
 
     sum_sub_goals += 1  # the latest full sub goal that is equals goal, we take it to attention too
-    return level
+    return sum_sub_goals
 
 
 def isFixed(Graph, level):
