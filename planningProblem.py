@@ -55,11 +55,12 @@ class PlanningProblem():
         """
         self._expanded += 1
         successors = []
-        states_dict = dict() # we use dictionary to updates propositions
 
         for a in self.actions:
+
             if not a.isNoOp() and a.allPrecondsInList(state):
                 # connect states between state and action add and then delete what action remove
+                states_dict = dict()
                 for i in state:
                     states_dict[i.getName()] = i
                 for i in a.getAdd():
