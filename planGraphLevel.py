@@ -67,8 +67,7 @@ class PlanGraphLevel(object):
             if previousPropositionLayer.allPrecondsInLayer(action):  # only if all pre. exist, then try to add it
                 mutexes = previousPropositionLayer.getMutexProps()
                 has_mutexes = False
-                for p1, p2 in product(action.getPre(),
-                                      action.getPre()):  # check for all pairs of mutexes, also if we have one pre. only, it will work
+                for p1, p2 in product(action.getPre(), action.getPre()):  # check for all pairs of mutexes, also if we have one pre. only, it will work
                     if Pair(p1, p1) in mutexes:
                         has_mutexes = True
                         break
@@ -104,24 +103,15 @@ class PlanGraphLevel(object):
         self.propositionLayer.addProposition(prop) adds the proposition prop to the current layer
 
         """
-        currentLayerActions = self.actionLayer.getActions()
-        # propositionLayer = self.getPropositionLayer()
-
-        props_in = dict()
+        added_props = {}
         for action in self.actionLayer.getActions():
             for prop in action.getAdd():
-                if prop.getName() not in props_in:
-                    props_in[prop.getName()] = prop
+                if prop.getName() not in added_props:  # we don't wan't to add proposition twice
+                    added_props[prop.getName()] = prop
                     self.getPropositionLayer().addProposition(prop)
-                props_in[prop.getName()].addProducer(action)
-
-
-        # for action in self.actionLayer.getActions():
-        #     for prop in action.getAdd():
-        #         if prop not in self.getPropositionLayer().getPropositions():
-        #
-        #             self.getPropositionLayer().addProposition(prop)
-        #         prop.addProducer(action)
+                else:
+                    if action not in prop.getProducers():  # in case action not in producers, not see that issue but was asked to add that line in description
+                        prop.addProducer(action)
 
     def updateMutexProposition(self):
         """
@@ -153,7 +143,6 @@ class PlanGraphLevel(object):
         self.updateMutexActions(previousLayerMutexProposition)
         self.updatePropositionLayer()
         self.updateMutexProposition()
-        print
 
     def expandWithoutMutex(self, previousLayer):
         """

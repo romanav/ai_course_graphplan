@@ -58,7 +58,7 @@ class PlanningProblem():
 
         for a in self.actions:
 
-            if not a.isNoOp() and a.allPrecondsInList(state):
+            if not a.isNoOp() and a.allPrecondsInList(state):  # noOp will make us hold on same location
                 # connect states between state and action add and then delete what action remove
                 states_dict = dict()
                 for i in state:
@@ -66,7 +66,7 @@ class PlanningProblem():
                 for i in a.getAdd():
                     states_dict[i.getName()] = i
                 for i in a.getDelete():
-                    if states_dict.has_key(i.getName()):
+                    if i.getName() in states_dict:
                         states_dict.pop(i.getName())
 
                 successors.append((states_dict.values(), a, 1))
@@ -111,6 +111,9 @@ def maxLevel(state, problem):
     pgInit = PlanGraphLevel()                   #create a new plan graph level (level is the action layer and the propositions layer)
     pgInit.setPropositionLayer(propLayerInit)   #update the new plan graph level with the the proposition layer
     """
+
+    """ this is copy paste from graph plan algorithm, with small change in loop definition and disabling of mutex """
+
     propLayerInit = PropositionLayer()  # create a new proposition layer
     for prop in state:
         propLayerInit.addProposition(prop)  # update the proposition layer with the propositions of the state
@@ -124,8 +127,6 @@ def maxLevel(state, problem):
     while problem.goalStateNotInPropLayer(graph[level].getPropositionLayer().getPropositions()):
         if isFixed(graph, level):
             return float("inf")  # this means we stopped the while loop above because we reached a fixed point in the graph. nothing more to do, we failed!
-
-        # self.noGoods.append([])
         level = level + 1
         pgNext = PlanGraphLevel()  # create new PlanGraph object
         pgNext.expandWithoutMutex(graph[level - 1])  # calls the expand function, which you are implementing in the PlanGraph class
