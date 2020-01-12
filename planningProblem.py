@@ -85,6 +85,12 @@ class PlanningProblem():
                 return True
         return False
 
+    def isSubGoal(self, propositions):
+        for goal in self.goal:
+            if goal in propositions:
+                return True
+        return False
+
     def createNoOps(self):
         """
         Creates the noOps that are used to propagate propositions from one layer to the next
@@ -141,7 +147,33 @@ def levelSum(state, problem):
     The heuristic value is the sum of sub-goals level they first appeared.
     If the goal is not reachable from the state your heuristic should return float('inf')
     """
-    "*** YOUR CODE HERE ***"
+    """ this is copy paste from graph plan algorithm, with small change in loop definition and disabling of mutex """
+
+    propLayerInit = PropositionLayer()  # create a new proposition layer
+    for prop in state:
+        propLayerInit.addProposition(prop)  # update the proposition layer with the propositions of the state
+    pgInit = PlanGraphLevel()  # create a new plan graph level (level is the action layer and the propositions layer)
+    pgInit.setPropositionLayer(propLayerInit)
+
+    graph = []
+    sum_sub_goals = 0
+    level = 0
+    graph.append(pgInit)
+
+    while problem.goalStateNotInPropLayer(graph[level].getPropositionLayer().getPropositions()):
+        if isFixed(graph, level):
+            return float("inf")  # this means we stopped the while loop above because we reached a fixed point in the graph. nothing more to do, we failed!
+
+        if problem.isSubGoal(graph[level].getPropositionLayer().getPropositions()):  # if we have sub goal here. count it
+            sum_sub_goals += 1
+        level += 1
+
+        pgNext = PlanGraphLevel()  # create new PlanGraph object
+        pgNext.expandWithoutMutex(graph[level - 1])  # calls the expand function, which you are implementing in the PlanGraph class
+        graph.append(pgNext)  # appending the new level to the plan graph
+
+    sum_sub_goals += 1  # the latest full sub goal that is equals goal, we take it to attention too
+    return level
 
 
 def isFixed(Graph, level):
