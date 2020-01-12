@@ -1,8 +1,7 @@
 https://github.com/anupamurali/GraphPlan/blob/master/planGraphLevel.py
 
-Initial state: r1 q2 a1 b2 ur uq
-Goal state: a2 b1
+others
+[Mq21, bq, Mr12, a1, ar, b2, Ubq1, Mq12, r2, a1, Uar2, b2, b1, Mq21, r2, a1, Laq2, Lbr2]
 
-[Mr12, Lar1, Mq21, Lbq2, Uar2, Ubq1]
-
-[r2, q1, ar, bq, r1, q2, ur, uq, a1, b2]
+main
+[Mq21, bq, Mr12, a1, ar, b2, Ubq1, Mq12, r2, a1, Uar2, b2, b1, Mq21, r2, a1, Laq2, Lbr2]
