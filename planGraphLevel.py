@@ -104,7 +104,7 @@ class PlanGraphLevel(object):
         self.propositionLayer.addProposition(prop) adds the proposition prop to the current layer
 
         """
-        # currentLayerActions = self.actionLayer.getActions()
+        currentLayerActions = self.actionLayer.getActions()
         # propositionLayer = self.getPropositionLayer()
 
         props_in = dict()
@@ -153,6 +153,7 @@ class PlanGraphLevel(object):
         self.updateMutexActions(previousLayerMutexProposition)
         self.updatePropositionLayer()
         self.updateMutexProposition()
+        print
 
     def expandWithoutMutex(self, previousLayer):
         """
