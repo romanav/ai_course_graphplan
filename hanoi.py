@@ -8,10 +8,13 @@ def createDomainFile(domainFileName, n):
     combinations = generate_all_possible_combinations(n)
     possible_peg_switches = get_all_peg_switches()
 
-    for ps in possible_peg_switches:
+    for x,y in possible_peg_switches:
         for cx, cy in product(combinations, combinations):
             if is_pegs_state_valid(cx, cy) and is_switch_from_x_to_y_valid(cx, cy):
-                print ("%s%s%s" % (ps, cx, cy))
+                print("pre: %s%s %s%s" % (x, cx, y, cy))
+                cx_new, cy_new = make_switch(cx, cy)
+                print("res: %s%s %s%s\n" % (y, cx_new, y, cy_new))
+
 
     # propositions = list(product(pegs, combinations))
     # print (str(list(propositions)))
@@ -42,6 +45,19 @@ def is_switch_from_x_to_y_valid(x_state, y_state):
     if len(y_state) == 0:
         return True
     return x_state[0] < y_state[0]
+
+def make_switch(x_state, y_state):
+    """
+    Make ring switch
+    """
+    # first need to copy arrays to prevent changes in caller
+    x_state = [i for i in x_state]
+    y_state = [i for i in y_state]
+
+    ring = x_state.pop(0)
+    y_state.insert(0, ring)
+
+    return x_state, y_state
 
 
 def generate_all_possible_combinations(n):
