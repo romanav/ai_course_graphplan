@@ -10,7 +10,7 @@ def createDomainFile(domainFileName, n):
 
     for ps in possible_peg_switches:
         for cx, cy in product(combinations, combinations):
-            if is_switch_from_x_to_y_valid(cx, cy):
+            if is_pegs_state_valid(cx, cy) and is_switch_from_x_to_y_valid(cx, cy):
                 print ("%s%s%s" % (ps, cx, cy))
 
     # propositions = list(product(pegs, combinations))
@@ -21,6 +21,11 @@ def createDomainFile(domainFileName, n):
     #     :
     #         comb_str =
     #         domain_file.write("%s%s " % (p, comb_str))
+
+
+def is_pegs_state_valid(x, y):
+    """we check here that ring is not duplicated on pegs"""
+    return len(set(x) | set(y)) == len(x) + len(y)
 
 
 def get_all_peg_switches():
@@ -37,9 +42,6 @@ def is_switch_from_x_to_y_valid(x_state, y_state):
     if len(y_state) == 0:
         return True
     return x_state[0] < y_state[0]
-
-
-
 
 
 def generate_all_possible_combinations(n):
