@@ -3,7 +3,6 @@ from itertools import product
 
 
 def createDomainFile(domainFileName, n):
-    # numbers = list(range(n))  # [0,...,n-1]
     pegs = ['a', 'b', 'c']
     combinations = generate_all_possible_combinations(n)
     possible_peg_switches = get_all_peg_switches()
@@ -18,14 +17,16 @@ def createDomainFile(domainFileName, n):
             for cx, cy in product(combinations, combinations):
                 if is_pegs_state_valid(cx, cy) and is_switch_from_x_to_y_valid(cx, cy):
                     pre = "%s%s %s%s" % (x, lst_to_str(cx), y, lst_to_str(cy))  # preconditions formatting
-                    domain_file.write("Name: S_" + pre.replace(' ', '') + '\n')
-                    domain_file.write("pre: " + pre + '\n')
+                    domain_file.write("Name: S_" + pre.replace(' ', '') + '\n')  # action name just as precondition
+                    domain_file.write("pre: " + pre + '\n')  # precondition
                     cx_new, cy_new = make_switch(cx, cy)
+                    # add next state and delete precondition
                     domain_file.write("add: %s%s %s%s" % (y, lst_to_str(cx_new), y, lst_to_str(cy_new)) + '\n')
-                    domain_file.write("delete: " + pre+'\n')
+                    domain_file.write("delete: " + pre + '\n')
 
 
 def lst_to_str(l):
+    """This method get array and delete white spaces from it"""
     return str(l).replace(' ', '')
 
 
@@ -35,6 +36,10 @@ def is_pegs_state_valid(x, y):
 
 
 def get_all_peg_switches():
+    """
+    This method return all permutations of pegs for example (a,b) and also (b,a)
+    We use it program transfer from a to b and also from b to a (left to right)
+    """
     pegs = ['a', 'b', 'c']
     to_return = list(itertools.combinations(pegs, 2))
     pegs.reverse()
@@ -75,6 +80,8 @@ def generate_all_possible_combinations(n):
     # we want to present the lowest ring coming first in array
     for i in ok_combinations:
         i.reverse()
+
+    # empty peg it's something we need to consider also
     return [[]] + ok_combinations
 
 
