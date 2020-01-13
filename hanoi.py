@@ -44,7 +44,7 @@ def is_switch_from_x_to_y_valid(x_state, y_state):
         return False
     if len(y_state) == 0:
         return True
-    return x_state[0] < y_state[0]
+    return x_state[-1] < y_state[-1]
 
 def make_switch(x_state, y_state):
     """
@@ -54,8 +54,7 @@ def make_switch(x_state, y_state):
     x_state = [i for i in x_state]
     y_state = [i for i in y_state]
 
-    ring = x_state.pop(0)
-    y_state.insert(0, ring)
+    y_state.append(x_state.pop())
 
     return x_state, y_state
 
@@ -68,6 +67,10 @@ def generate_all_possible_combinations(n):
     for x in xrange(0, n):
         # get all possible valid ring combinations for x rings
         ok_combinations += [list(i) for i in list(itertools.combinations(xrange(n), x + 1))]
+
+    # we want to present the lowest ring coming first in array
+    for i in ok_combinations:
+        i.reverse()
     return ok_combinations + [[]]
 
 
