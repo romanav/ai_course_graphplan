@@ -5,30 +5,52 @@ from itertools import product
 def createDomainFile(domainFileName, n):
     # numbers = list(range(n))  # [0,...,n-1]
     pegs = ['a', 'b', 'c']
+    combinations = generate_all_possible_combinations(n)
+    possible_peg_switches = get_all_peg_switches()
 
-    string_combinations = []
+    for ps in possible_peg_switches:
+        for cx, cy in product(combinations, combinations):
+            if is_switch_from_x_to_y_valid(cx, cy):
+                print ("%s%s%s" % (ps, cx, cy))
 
-    for rings in xrange(0, n):
-        # get all possible ring combinations even not permitted
-        combinations_list = [i for i in itertools.combinations(xrange(n), rings + 1)]
+    # propositions = list(product(pegs, combinations))
+    # print (str(list(propositions)))
 
-        # filter all combinations that are ok and write them to the output
-        for combination in combinations_list:
-            if all(combination[i] <= combination[i + 1] for i in xrange(len(combination) - 1)):  # is sorted tuple
-                string_combinations.append(''.join(map(str, combination)))
-
-    with open(domainFileName, 'w') as domain_file:
-        domain_file.write("Propositions:\n")
-        for i in product(pegs, string_combinations):
-            domain_file.write("%s%s " % i)
-
-    # propositions = ["%s%d" % (peg, number) for peg, number in product(pegs, range(n))]
-
-    # with open(domainFileName, 'w') as domain_file:  # use domainFile.write(str) to write to domainFile
+    # with open(domainFileName, 'w') as domain_file:
     #     domain_file.write("Propositions:\n")
-    #     for i in propositions:
-    #         domain_file.write(i+" ")
-    #     domain_file.write("\nActions:\n")
+    #     :
+    #         comb_str =
+    #         domain_file.write("%s%s " % (p, comb_str))
+
+
+def get_all_peg_switches():
+    pegs = ['a', 'b', 'c']
+    to_return = list(itertools.combinations(pegs, 2))
+    pegs.reverse()
+    to_return += list(itertools.combinations(pegs, 2))
+    return to_return
+
+
+def is_switch_from_x_to_y_valid(x_state, y_state):
+    if len(x_state) == 0:
+        return False
+    if len(y_state) == 0:
+        return True
+    return x_state[0] < y_state[0]
+
+
+
+
+
+def generate_all_possible_combinations(n):
+    """
+    This method generate all possible placements of rings on peg including empty peg
+    """
+    ok_combinations = []
+    for x in xrange(0, n):
+        # get all possible valid ring combinations for x rings
+        ok_combinations += [list(i) for i in list(itertools.combinations(xrange(n), x + 1))]
+    return ok_combinations + [[]]
 
 
 def createProblemFile(problemFileName, n):
