@@ -8,22 +8,25 @@ def createDomainFile(domainFileName, n):
     combinations = generate_all_possible_combinations(n)
     possible_peg_switches = get_all_peg_switches()
 
-    for x,y in possible_peg_switches:
-        for cx, cy in product(combinations, combinations):
-            if is_pegs_state_valid(cx, cy) and is_switch_from_x_to_y_valid(cx, cy):
-                print("pre: %s%s %s%s" % (x, cx, y, cy))
-                cx_new, cy_new = make_switch(cx, cy)
-                print("res: %s%s %s%s\n" % (y, cx_new, y, cy_new))
+    with open(domainFileName, 'w') as domain_file:
+        domain_file.write("Propositions:\n")
+        for p, x in product(pegs, combinations):
+            domain_file.write(str(p) + str(x).replace(' ', '') + " ")
+
+        domain_file.write('Actions:\n')
+        for x, y in possible_peg_switches:
+            for cx, cy in product(combinations, combinations):
+                if is_pegs_state_valid(cx, cy) and is_switch_from_x_to_y_valid(cx, cy):
+                    pre = "%s%s %s%s" % (x, lst_to_str(cx), y, lst_to_str(cy))  # preconditions formatting
+                    domain_file.write("Name: S_" + pre.replace(' ', '') + '\n')
+                    domain_file.write("pre: " + pre + '\n')
+                    cx_new, cy_new = make_switch(cx, cy)
+                    domain_file.write("add: %s%s %s%s" % (y, lst_to_str(cx_new), y, lst_to_str(cy_new)) + '\n')
+                    domain_file.write("delete: " + pre+'\n')
 
 
-    # propositions = list(product(pegs, combinations))
-    # print (str(list(propositions)))
-
-    # with open(domainFileName, 'w') as domain_file:
-    #     domain_file.write("Propositions:\n")
-    #     :
-    #         comb_str =
-    #         domain_file.write("%s%s " % (p, comb_str))
+def lst_to_str(l):
+    return str(l).replace(' ', '')
 
 
 def is_pegs_state_valid(x, y):
@@ -45,6 +48,7 @@ def is_switch_from_x_to_y_valid(x_state, y_state):
     if len(y_state) == 0:
         return True
     return x_state[-1] < y_state[-1]
+
 
 def make_switch(x_state, y_state):
     """
@@ -71,7 +75,7 @@ def generate_all_possible_combinations(n):
     # we want to present the lowest ring coming first in array
     for i in ok_combinations:
         i.reverse()
-    return ok_combinations + [[]]
+    return [[]] + ok_combinations
 
 
 def createProblemFile(problemFileName, n):
