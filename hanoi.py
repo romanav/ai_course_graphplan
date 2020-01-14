@@ -9,10 +9,11 @@ def createDomainFile(domainFileName, n):
 
     with open(domainFileName, 'w') as domain_file:
         domain_file.write("Propositions:\n")
-        for p, x in product(pegs, combinations):
+        for p, x in product(pegs, combinations):  # write all propositions, aka pegs ring states
             domain_file.write(str(p) + str(x).replace(' ', '') + " ")
 
         domain_file.write('Actions:\n')
+        # generate all possible actions
         for x, y in possible_peg_switches:
             for cx, cy in product(combinations, combinations):
                 if is_pegs_state_valid(cx, cy) and is_switch_from_x_to_y_valid(cx, cy):
@@ -48,6 +49,9 @@ def get_all_peg_switches():
 
 
 def is_switch_from_x_to_y_valid(x_state, y_state):
+    """
+    Check here if we can move the ring from x to y
+    """
     if len(x_state) == 0:
         return False
     if len(y_state) == 0:
@@ -95,10 +99,10 @@ def createProblemFile(problemFileName, n):
         all_on_state_str = str(all_on_state).replace(' ', '')
         problemFile.write("Initial state: " + pegs[0] + all_on_state_str)
         problemFile.write(' ')
-        for i in pegs[1:]:
+        for i in pegs[1:]:  # fill other pegs in init state
             problemFile.write(i+"[] ")
         problemFile.write("\nGoal state: ")
-        for i in pegs[:-1]:
+        for i in pegs[:-1]:  # fill first pegs in init state
             problemFile.write(i+'[] ')
         problemFile.write(pegs[-1] + all_on_state_str)
 

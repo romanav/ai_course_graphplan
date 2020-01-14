@@ -36,6 +36,8 @@ class PlanningProblem():
         """
         Hint: you might want to take a look at goalStateNotInPropLayer function
         """
+
+        # in case goal is in the state, we done
         for g in self.goal:
             if g not in state:
                 return False
@@ -59,8 +61,8 @@ class PlanningProblem():
         for a in self.actions:
 
             if not a.isNoOp() and a.allPrecondsInList(state):  # noOp will make us hold on same location
-                # connect states between state and action add and then delete what action remove
-                states_dict = dict()
+                # connect states between state and action and then delete what action remove
+                states_dict = dict()  # dictionary solving issue with with action comparison, we check only by name
                 for i in state:
                     states_dict[i.getName()] = i
                 for i in a.getAdd():
