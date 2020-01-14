@@ -21,7 +21,7 @@ def createDomainFile(domainFileName, n):
                     domain_file.write("pre: " + pre + '\n')  # precondition
                     cx_new, cy_new = make_switch(cx, cy)
                     # add next state and delete precondition
-                    domain_file.write("add: %s%s %s%s" % (y, lst_to_str(cx_new), y, lst_to_str(cy_new)) + '\n')
+                    domain_file.write("add: %s%s %s%s" % (x, lst_to_str(cx_new), y, lst_to_str(cy_new)) + '\n')
                     domain_file.write("delete: " + pre + '\n')
 
 
@@ -88,10 +88,19 @@ def generate_all_possible_combinations(n):
 def createProblemFile(problemFileName, n):
     numbers = list(range(n))  # [0,...,n-1]
     pegs = ['a', 'b', 'c']
-    problemFile = open(problemFileName, 'w')  # use problemFile.write(str) to write to problemFile
-    "*** YOUR CODE HERE ***"
 
-    problemFile.close()
+    with open(problemFileName, 'w') as problemFile:  # use problemFile.write(str) to write to problemFile
+        all_on_state = list(range(n))
+        all_on_state.reverse()
+        all_on_state_str = str(all_on_state).replace(' ', '')
+        problemFile.write("Initial state: " + pegs[0] + all_on_state_str)
+        problemFile.write(' ')
+        for i in pegs[1:]:
+            problemFile.write(i+"[] ")
+        problemFile.write("\nGoal state: ")
+        for i in pegs[:-1]:
+            problemFile.write(i+'[] ')
+        problemFile.write(pegs[-1] + all_on_state_str)
 
 
 import sys
